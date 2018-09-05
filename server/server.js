@@ -1,5 +1,6 @@
 // io.on("connection", socket => {}) here the socket is indivadual socket for each user.
 // one side emit another side use socket.on to recieve the emit from another side.
+// socket.on('createMessage', (message, callback)} callback is the acknoledge callback function to make sure the emited message has been recieved by the other side.
 const path = require("path");
 const http = require("http");
 const express = require("express");
@@ -27,9 +28,10 @@ io.on("connection", socket => {
     generateMessage("Admin", "New user joined")
   );
 
-  socket.on("createMessage", message => {
+  socket.on("createMessage", (message, callback) => {
     console.log("createMessage", message);
     io.emit("newMessage", generateMessage(message.from, message.text));
+    callback("This is from the server.");
     // socket.broadcast.emit('newMessage', {
     //   from: message.from,
     //   text: message.text,
