@@ -1,55 +1,62 @@
-[{
-  id: '/#12poiajdspfoif',
-  name: 'Andrew',
-  room: 'The Office Fans'
-}]
-
-// addUser(id, name, room)
-// removeUser(id)
-// getUser(id)
-// getUserList(room)
+const geolib = require("geolib");
 
 class Users {
-  constructor () {
+  constructor() {
     this.users = [];
   }
-  addUser (id, name, room) {
-    var user = {id, name, room};
+  addUser(id, name, room, location) {
+    var user = { id, name, room, location };
     this.users.push(user);
     return user;
   }
-  removeUser (id) {
+  removeUser(id) {
     var user = this.getUser(id);
 
     if (user) {
-      this.users = this.users.filter((user) => user.id !== id);
+      this.users = this.users.filter(user => user.id !== id);
     }
 
     return user;
   }
-  getUser (id) {
-    return this.users.filter((user) => user.id === id)[0]
+  getUser(id) {
+    return this.users.filter(user => user.id === id)[0];
   }
-  getUserList (room) {
-    var users = this.users.filter((user) => user.room === room);
-    var namesArray = users.map((user) => user.name);
+  getUserList(room, curSocketID) {
+    var curUser = this.getUser(curSocketID);
+
+    var users = this.users.filter(user => user.room === room);
+
+    var namesArray = users.map(user => {
+      var newNameObject = {
+        name: user.name,
+        distance:
+          curUser.location === "" || user.location === ""
+            ? "no data"
+            : geolib.convertUnit(
+                "mi",
+                geolib.getDistance(curUser.location, user.location),
+                2
+              )
+      };
+      return newNameObject;
+    });
+
+    var namesArrayNoGeoData = namesArray.filter(
+      nameObj => nameObj.distance === "no data"
+    );
+
+    var namesArrayGeoData = namesArray.filter(
+      nameObj => nameObj.distance !== "no data"
+    );
+
+    namesArrayGeoData.sort(function(nameObjA, nameObjB) {
+      return nameObjA.distance - nameObjB.distance;
+    });
+
+    namesArray = namesArrayGeoData.concat(namesArrayNoGeoData);
 
     return namesArray;
   }
 }
 
-module.exports = {Users};
-
- // class Person {
- //   constructor (name, age) {
- //     this.name = name;
- //     this.age = age;
- //   }
- //   getUserDescription () {
- //     return `${this.name} is ${this.age} year(s) old.`;
- //   }
- // }
- //
- // var me = new Person('Andrew', 25);
- // var description = me.getUserDescription();
- // console.log(description);
+module.exports = { Users };
