@@ -23,46 +23,58 @@ class Users {
   }
 
   getUserbyNameRoom(name, room) {
+    console.log(name, room);
+    console.log(
+      this.users.filter(user => user.name === name && user.room === room)
+    );
     return this.users.filter(
-      user => user.name === name || user.room === room
+      user => user.name === name && user.room === room
     )[0];
   }
-
+  // return a object of {user: userlist.....}
   getUserList(room, curSocketID) {
     var curUser = this.getUser(curSocketID);
 
     var users = this.users.filter(user => user.room === room);
 
-    var namesArray = users.map(user => {
-      var newNameObject = {
-        name: user.name,
-        distance:
-          curUser.location === "" || user.location === ""
-            ? "unknown"
-            : geolib.convertUnit(
-                "mi",
-                geolib.getDistance(curUser.location, user.location),
-                2
-              )
-      };
-      return newNameObject;
-    });
+    var namesArrayObj = {};
 
-    var namesArrayNoGeoData = namesArray.filter(
-      nameObj => nameObj.distance === "unknown"
-    );
+    for (var i = 0; i < users.length; i++) {
+      var curUser = users[i];
 
-    var namesArrayGeoData = namesArray.filter(
-      nameObj => nameObj.distance !== "unknown"
-    );
+      var namesArray = users.map(user => {
+        var newNameObject = {
+          name: user.name,
+          distance:
+            curUser.location === "" || user.location === ""
+              ? "unknown"
+              : geolib.convertUnit(
+                  "mi",
+                  geolib.getDistance(curUser.location, user.location),
+                  2
+                )
+        };
+        return newNameObject;
+      });
 
-    namesArrayGeoData.sort(function(nameObjA, nameObjB) {
-      return nameObjA.distance - nameObjB.distance;
-    });
+      var namesArrayNoGeoData = namesArray.filter(
+        nameObj => nameObj.distance === "unknown"
+      );
 
-    namesArray = namesArrayGeoData.concat(namesArrayNoGeoData);
+      var namesArrayGeoData = namesArray.filter(
+        nameObj => nameObj.distance !== "unknown"
+      );
 
-    return namesArray;
+      namesArrayGeoData.sort(function(nameObjA, nameObjB) {
+        return nameObjA.distance - nameObjB.distance;
+      });
+
+      namesArray = namesArrayGeoData.concat(namesArrayNoGeoData);
+
+      namesArrayObj[curUser.name] = namesArray;
+    }
+    console.log(namesArrayObj);
+    return namesArrayObj;
   }
 }
 

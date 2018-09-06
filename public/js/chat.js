@@ -55,8 +55,9 @@ function emitWithGeoLocation(params) {
   );
 }
 
+var params;
 socket.on("connect", function() {
-  var params = jQuery.deparam(window.location.search);
+  params = jQuery.deparam(window.location.search);
   emitWithGeoLocation(params);
 });
 
@@ -67,7 +68,8 @@ socket.on("disconnect", function() {
 // have to have unique name with in the same chat room. Use user socketid at client side code to ensure private sent message will leak info.
 var sidebarUserArray;
 
-socket.on("updateUserList", function(users) {
+socket.on("updateUserList", function(usersObj) {
+  users = usersObj[params.name];
   sidebarUserArray = users;
 
   var ol = jQuery("<ol></ol>");

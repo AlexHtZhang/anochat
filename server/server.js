@@ -1,3 +1,28 @@
+// cheatsheet
+//  // sending to sender-client only
+//  socket.emit('message', "this is a test");
+
+//  // sending to all clients, include sender
+//  io.emit('message', "this is a test");
+
+//  // sending to all clients except sender
+//  socket.broadcast.emit('message', "this is a test");
+
+//  // sending to all clients in 'game' room(channel) except sender
+//  socket.broadcast.to('game').emit('message', 'nice game');
+
+//  // sending to all clients in 'game' room(channel), include sender
+//  io.in('game').emit('message', 'cool game');
+
+//  // sending to sender client, only if they are in 'game' room(channel)
+//  socket.to('game').emit('message', 'enjoy the game');
+
+//  // sending to all clients in namespace 'myNamespace', include sender
+//  io.of('myNamespace').emit('message', 'gg');
+
+//  // sending to individual socketid
+//  socket.broadcast.to(socketid).emit('message', 'for your eyes only');
+
 // io.on("connection", socket => {}) here the socket is indivadual socket for each user.
 // one side emit another side use socket.on to recieve the emit from another side.`
 // socket.on('createMessage', (message, callback)} callback is the acknoledge callback function to make sure the emited message has been recieved by the other side. logic need to be add to both on and emit functions to make it happen.
@@ -8,7 +33,7 @@ const express = require("express");
 const socketIO = require("socket.io");
 
 const { generateMessage, generateLocationMessage } = require("./utils/message");
-const { isRealString } = require("./utils/validation");
+const { isRealString, isPrivate } = require("./utils/validation");
 const { Users } = require("./utils/users");
 
 const publicPath = path.join(__dirname, "../public");
@@ -21,6 +46,7 @@ var users = new Users();
 app.use(express.static(publicPath));
 
 io.on("connection", socket => {
+  console.log(users);
   console.log("New user connected");
 
   socket.on("join", (params, callback) => {
@@ -34,7 +60,7 @@ io.on("connection", socket => {
       params.name === "AnoChatRobot"
     ) {
       return callback(
-        "please user another user name, user name is occupied in this room"
+        "please user another user name, this user name is occupied in this room"
       );
     }
 
@@ -63,10 +89,25 @@ io.on("connection", socket => {
     var user = users.getUser(socket.id);
 
     if (user && isRealString(message.text)) {
-      io.to(user.room).emit(
-        "newMessage",
-        generateMessage(user.name, message.text)
-      );
+      var targetUser = isPrivate(message.text, user.room, users);
+      if (targetUser) {
+        targetID = targetUser.id;
+        socket.broadcast
+          .to(targetID)
+          .emit(
+            "newMessage",
+            generateMessage(user.name, message.text + " (private)")
+          );
+        socket.emit(
+          "newMessage",
+          generateMessage(user.name, message.text + " (private)")
+        );
+      } else {
+        io.to(user.room).emit(
+          "newMessage",
+          generateMessage(user.name, message.text)
+        );
+      }
     }
 
     callback();
