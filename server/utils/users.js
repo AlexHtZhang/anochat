@@ -21,6 +21,13 @@ class Users {
   getUser(id) {
     return this.users.filter(user => user.id === id)[0];
   }
+
+  getUserbyNameRoom(name, room) {
+    return this.users.filter(
+      user => user.name === name || user.room === room
+    )[0];
+  }
+
   getUserList(room, curSocketID) {
     var curUser = this.getUser(curSocketID);
 

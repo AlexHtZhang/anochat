@@ -29,6 +29,15 @@ io.on("connection", socket => {
       return callback("user name and room name can not be empty.");
     }
 
+    if (
+      users.getUserbyNameRoom(params.name, params.room) ||
+      params.name === "AnoChatRobot"
+    ) {
+      return callback(
+        "please user another user name, user name is occupied in this room"
+      );
+    }
+
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room, params.location);
@@ -45,7 +54,7 @@ io.on("connection", socket => {
       .to(params.room)
       .emit(
         "newMessage",
-        generateMessage("AnoChatRobot", `${params.name} has joined.`)
+        generateMessage("AnoChatRobot", `Say Hi to ${params.name}.`)
       );
     callback();
   });

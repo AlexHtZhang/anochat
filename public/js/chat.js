@@ -64,7 +64,7 @@ socket.on("disconnect", function() {
   console.log("Disconnected from server");
 });
 
-// have to have unique name with in the same chat room. Use user socketid at client side code to ensure indivaidual sent message will leak info.
+// have to have unique name with in the same chat room. Use user socketid at client side code to ensure private sent message will leak info.
 var sidebarUserArray;
 
 socket.on("updateUserList", function(users) {
