@@ -31,7 +31,7 @@ class Users {
         name: user.name,
         distance:
           curUser.location === "" || user.location === ""
-            ? "no data"
+            ? "unknown"
             : geolib.convertUnit(
                 "mi",
                 geolib.getDistance(curUser.location, user.location),
@@ -42,11 +42,11 @@ class Users {
     });
 
     var namesArrayNoGeoData = namesArray.filter(
-      nameObj => nameObj.distance === "no data"
+      nameObj => nameObj.distance === "unknown"
     );
 
     var namesArrayGeoData = namesArray.filter(
-      nameObj => nameObj.distance !== "no data"
+      nameObj => nameObj.distance !== "unknown"
     );
 
     namesArrayGeoData.sort(function(nameObjA, nameObjB) {

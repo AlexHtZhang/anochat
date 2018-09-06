@@ -64,7 +64,12 @@ socket.on("disconnect", function() {
   console.log("Disconnected from server");
 });
 
+// have to have unique name with in the same chat room. Use user socketid at client side code to ensure indivaidual sent message will leak info.
+var sidebarUserArray;
+
 socket.on("updateUserList", function(users) {
+  sidebarUserArray = users;
+
   var ol = jQuery("<ol></ol>");
 
   users.forEach(function(user) {
@@ -80,7 +85,12 @@ socket.on("newMessage", function(message) {
   var html = Mustache.render(template, {
     text: message.text,
     from: message.from,
-    createdAt: formattedTime
+    createdAt: formattedTime,
+    distance:
+      message.from !== "AnoChatRobot"
+        ? sidebarUserArray.filter(user => user.name === message.from)[0]
+            .distance
+        : "unknown"
   });
 
   jQuery("#messages").append(html);
