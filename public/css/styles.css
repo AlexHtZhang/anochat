@@ -26,17 +26,18 @@ h3 {
   text-align: center;
   font-size: 1.5rem;
 }
+
 button {
-  background: #265f82;
+  background: #000000;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 button:hover {
-  background: #1f4c69;
+  background: #363636;
 }
 button:disabled {
   cursor: default;
-  background: #698ea5;
+  background: #9c9c9c;
 }
 .centered-form {
   display: flex;
@@ -44,46 +45,30 @@ button:disabled {
   height: 100vh;
   width: 100vw;
   justify-content: center;
-  background: -moz-linear-gradient(
-    125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
+  background: -moz-linear-gradient(125deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
   background: -webkit-gradient(
     linear,
     left top,
     right bottom,
-    color-stop(0, rgba(49, 84, 129, 1)),
-    color-stop(100%, rgba(39, 107, 130, 1))
+    color-stop(0, rgb(0, 0, 0)),
+    color-stop(100%, rgb(0, 0, 0))
   );
   background: -webkit-linear-gradient(
     125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
+    rgba(0, 0, 0) 0,
+    rgba(0, 0, 0) 100%
   );
-  background: -o-linear-gradient(
-    125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
-  background: -ms-linear-gradient(
-    125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
-  background: linear-gradient(
-    325deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
+  background: -o-linear-gradient(125deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
+  background: -ms-linear-gradient(125deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
+  background: linear-gradient(325deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
 }
 .centered-form__form {
-  background: rgba(250, 250, 250, 0.9);
-  border: 1px solid #e1e1e1;
+  background: rgba(0, 0, 0, 0.9);
+  border: 3px solid #ffffff;
   border-radius: 5px;
-  padding: 0 20px;
-  margin: 20px;
-  width: 230px;
+  padding: 0 10px;
+  margin: 10px;
+  width: 500px;
 }
 .form-field {
   margin: 20px 0;
@@ -116,58 +101,53 @@ button:disabled {
     linear,
     left top,
     right bottom,
-    color-stop(0, rgba(49, 84, 129, 1)),
-    color-stop(100%, rgba(39, 107, 130, 1))
+    color-stop(0, rgba(0, 0, 0)),
+    color-stop(100%, rgba(0, 0, 0))
   );
   background: -webkit-linear-gradient(
     125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
+    rgba(0, 0, 0) 0,
+    rgba(0, 0, 0) 100%
   );
-  background: -o-linear-gradient(
-    125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
-  background: -ms-linear-gradient(
-    125deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
-  background: linear-gradient(
-    325deg,
-    rgba(39, 107, 130, 1) 0,
-    rgba(49, 84, 129, 1) 100%
-  );
+  background: -o-linear-gradient(125deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
+  background: -ms-linear-gradient(125deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
+  background: linear-gradient(325deg, rgba(0, 0, 0) 0, rgba(0, 0, 0) 100%);
 }
-.chat__footer,
+
+.chat__footer {
+  background: #000000;
+  padding: 10px;
+}
 .chat__sidebar li {
-  background: #e6eaee;
+  background: #000000;
   padding: 10px;
 }
 .chat__sidebar h3 {
-  color: #e6eaee;
+  color: #ffffff;
   margin: 10px 20px;
   text-align: left;
 }
 .chat__sidebar li {
-  border: 1px solid #e1e1e1;
+  border: 2px solid #ffffff;
   border-radius: 5px;
   margin: 10px;
 }
 .chat__main {
+  border-left: 2px solid #ffffff;
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100%;
 }
 .chat__messages {
+  background: #000000;
   flex-grow: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 10px;
 }
 .chat__footer {
+  border-top: 2px solid #ffffff;
   display: flex;
   flex-shrink: 0;
 }
@@ -187,15 +167,21 @@ button:disabled {
   padding: 10px;
 }
 .message__title {
+  color: rgb(255, 255, 255);
   display: flex;
   margin-bottom: 5px;
 }
 .message__title h4 {
+  color: rgb(255, 255, 255);
   font-weight: 600;
   margin-right: 10px;
 }
 .message__title span {
   color: #999;
+}
+
+.message__body p {
+  color: rgb(255, 255, 255);
 }
 @media (max-width: 600px) {
   * {
@@ -213,4 +199,28 @@ button:disabled {
   .chat__footer button {
     margin-right: 0;
   }
+}
+
+.index-title {
+  color: rgb(255, 255, 255);
+}
+
+.index-title-main {
+  font-weight: 200;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.index-title-sub {
+  font-weight: 150;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.index-form-text {
+  color: rgb(255, 255, 255);
+}
+
+.chat__sidebar__username {
+  color: rgb(255, 255, 255);
 }

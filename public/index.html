@@ -3,30 +3,38 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Join | ChatApp</title>
+  <title>AnoChatBox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 
-<body class="centered-form">
-  <div class="centered-form__form">
-    <form action="/chat.html">
-      <div class="form-field">
-        <h3>Join a Chat<h3>
-      </div>
-      <div class="form-field">
-        <label>Display name</label>
-        <input type="text" name="name" autofocus/>
-      </div>
-      <div class="form-field">
-        <label>Room name</label>
-        <input type="text" name="room"/>
-      </div>
-      <div class="form-field">
-        <button>Join</button>
-      </div>
-    </form>
+<div class="row">
+
+  <div class="index-title">
+    <div class="index-title-main">Chat Anonymously in a City.
+    </div>
+    <div class="index-title-sub">while knowing how far away from others
+    </div>
   </div>
-</body>
+
+  <body class="centered-form">
+    <div class="centered-form__form">
+      <form action="/chat.html">
+        <div class="form-field">
+          <label class="index-form-text">Display Name</label>
+          <input type="text" name="name" autofocus/>
+        </div>
+        <div class="form-field">
+          <label class="index-form-text">Zipcode (US only)</label>
+          <input type="text" name="room" />
+        </div>
+        <div class="form-field">
+          <button>Join</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</div>
+
 
 </html>

@@ -2,7 +2,7 @@
   "name": "anochat",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
@@ -21,7 +21,8 @@
     "mime": "^2.3.1",
     "moment": "^2.22.2",
     "parsejson": "0.0.3",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "zipcodes": "^7.0.0"
   },
   "devDependencies": {
     "expect": "^23.5.0",

@@ -12,8 +12,8 @@
 <body class="chat">
 
   <div class="chat__sidebar">
-    <h3>People</h3>
-    <div id="users"></div>
+    <h3 id="chat__room"></h3>
+    <div class="chat__sidebar__username" id="users"></div>
   </div>
 
   <div class="chat__main">
@@ -21,11 +21,11 @@
 
     <div class="chat__footer">
       <form id="message-form">
-        <input name="message" type="text" placeholder="enter '@username message' to send pravte message to another user." autofocus
+        <input name="message" type="text" placeholder="type '@username message' to send pravte message to another user." autofocus
           autocomplete="off" />
         <button>Send</button>
       </form>
-      <button id="send-location">Send location</button>
+      <!-- <button id="send-location">Send location</button> -->
     </div>
   </div>
 

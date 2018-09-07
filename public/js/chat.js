@@ -58,6 +58,7 @@ function emitWithGeoLocation(params) {
 var params;
 socket.on("connect", function() {
   params = jQuery.deparam(window.location.search);
+
   emitWithGeoLocation(params);
 });
 
@@ -69,15 +70,20 @@ socket.on("disconnect", function() {
 var sidebarUserArray;
 
 socket.on("updateUserList", function(usersObj) {
-  users = usersObj[params.name];
+  users = usersObj[0][params.name];
+
+  var roomTitle = usersObj[1];
   sidebarUserArray = users;
 
   var ol = jQuery("<ol></ol>");
 
   users.forEach(function(user) {
-    ol.append(jQuery("<li></li>").text(user.name + " " + user.distance + "mi"));
+    ol.append(
+      jQuery("<li></li>").text(user.name + " " + user.distance + " mi")
+    );
   });
 
+  jQuery("#chat__room").text(roomTitle);
   jQuery("#users").html(ol);
 });
 
@@ -99,18 +105,18 @@ socket.on("newMessage", function(message) {
   scrollToBottom();
 });
 
-socket.on("newLocationMessage", function(message) {
-  var formattedTime = moment(message.createdAt).format("h:mm a");
-  var template = jQuery("#location-message-template").html();
-  var html = Mustache.render(template, {
-    from: message.from,
-    url: message.url,
-    createdAt: formattedTime
-  });
+// socket.on("newLocationMessage", function(message) {
+//   var formattedTime = moment(message.createdAt).format("h:mm a");
+//   var template = jQuery("#location-message-template").html();
+//   var html = Mustache.render(template, {
+//     from: message.from,
+//     url: message.url,
+//     createdAt: formattedTime
+//   });
 
-  jQuery("#messages").append(html);
-  scrollToBottom();
-});
+//   jQuery("#messages").append(html);
+//   scrollToBottom();
+// });
 
 jQuery("#message-form").on("submit", function(e) {
   e.preventDefault();

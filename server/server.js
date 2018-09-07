@@ -31,6 +31,7 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketIO = require("socket.io");
+const zipcodes = require("zipcodes");
 
 const { generateMessage, generateLocationMessage } = require("./utils/message");
 const { isRealString, isPrivate } = require("./utils/validation");
@@ -49,11 +50,19 @@ io.on("connection", socket => {
   console.log(users);
   console.log("New user connected");
 
+  // room here is the zipcode
   socket.on("join", (params, callback) => {
-    console.log(params);
     if (!isRealString(params.name) || !isRealString(params.room)) {
-      return callback("user name and room name can not be empty.");
+      return callback("user name and zipcode can not be empty.");
     }
+
+    var cityObj = zipcodes.lookup(parseInt(params.room));
+    // if not valid us zipcode, return undefined object
+    if (!cityObj) {
+      return callback("please enter a valid US zipcode!");
+    }
+
+    params.room = cityObj.city + ", " + cityObj.state;
 
     if (
       users.getUserbyNameRoom(params.name, params.room) ||
@@ -64,14 +73,16 @@ io.on("connection", socket => {
       );
     }
 
+    console.log(params);
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room, params.location);
 
-    io.to(params.room).emit(
-      "updateUserList",
-      users.getUserList(params.room, socket.id)
-    );
+    var user = users.getUser(socket.id);
+    io.to(params.room).emit("updateUserList", [
+      users.getUserList(user.room, user.id),
+      user.room
+    ]);
     socket.emit(
       "newMessage",
       generateMessage("AnoChatRobot", "Welcome to the Anochat")
@@ -128,10 +139,10 @@ io.on("connection", socket => {
     var user = users.removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit(
-        "updateUserList",
-        users.getUserList(user.room, user.id)
-      );
+      io.to(user.room).emit("updateUserList", [
+        users.getUserList(user.room, user.id),
+        user.room
+      ]);
       io.to(user.room).emit(
         "newMessage",
         generateMessage("AnoChatRobot", `${user.name} has left.`)
